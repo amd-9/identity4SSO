@@ -14,13 +14,24 @@ namespace Identity4SSO.WebAuth.IdentityData
             {
                 new Client
                 {
-                    ClientId = "client",
-                    ClientName = "Implicit Client",
+                    ClientId = "spa client",
+                    ClientName = "Implicit SPA Client",
                     ProtocolType = "oidc",
-                    ClientUri =  "localhost:5003",
+                    ClientUri =  "http://localhost:5003",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    RedirectUris = new List<string> { "localhost:5003/callback" },
-                    AllowedScopes = new List<string> {"api"}
+                    AllowAccessTokensViaBrowser = true,
+                    IdentityTokenLifetime = 300,
+                    AccessTokenLifetime = 1800,
+                    AuthorizationCodeLifetime = 300,
+                    AbsoluteRefreshTokenLifetime = 2592000,
+                    SlidingRefreshTokenLifetime = 1296000,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    EnableLocalLogin = true,
+                    RequireConsent = false,
+                    AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
+                    RedirectUris = new List<string> { "http://localhost:5003/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5003/signout-oidc" },
+                    AllowedScopes = new List<string> {"openid", "profile", "api"}
                 }
             };
         }

@@ -84,7 +84,9 @@ namespace Identity4SSO.WebAuth
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseRouting();
-            app.UseAuthorization();
+
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
 
         }
