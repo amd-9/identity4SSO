@@ -1,6 +1,7 @@
 using Identity4SSO.WebAuth.IdentityData;
 using Identity4SSO.WebAuth.Models;
 using IdentityServer4.EntityFramework.DbContexts;
+using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -58,6 +59,7 @@ namespace Identity4SSO.WebAuth
                     options.Endpoints.EnableIntrospectionEndpoint = false;
                     options.Endpoints.EnableTokenEndpoint = true;
                     options.Endpoints.EnableTokenRevocationEndpoint = false;
+                    options.UserInteraction.LoginUrl = "/Windows/Challenge/";
                 })
                 .AddInMemoryIdentityResources(Resources.GetIdentityResources())
                 .AddInMemoryApiScopes(Resources.GetApiScopes())
@@ -65,6 +67,8 @@ namespace Identity4SSO.WebAuth
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddDeveloperSigningCredential();
 
+            services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+                .AddNegotiate();
 
             services.AddControllersWithViews();
         }
@@ -84,6 +88,8 @@ namespace Identity4SSO.WebAuth
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
 
